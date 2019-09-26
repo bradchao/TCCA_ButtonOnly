@@ -12,7 +12,7 @@ import com.google.android.things.pio.Gpio;
 import com.google.android.things.pio.PeripheralManager;
 
 public class MainActivity extends AppCompatActivity {
-    private Gpio gpioButton;
+    private Gpio gpioLed;
     private ButtonInputDriver btnDriver;
 
     @Override
@@ -23,8 +23,12 @@ public class MainActivity extends AppCompatActivity {
         PeripheralManager peripheralManager = PeripheralManager.getInstance();
 
         try{
+            gpioLed = peripheralManager.openGpio("BCM4");
+            gpioLed.setDirection(Gpio.DIRECTION_OUT_INITIALLY_LOW);
+            gpioLed.setValue(false);
+
             btnDriver = new ButtonInputDriver("BCM17",
-                    Button.LogicState.PRESSED_WHEN_LOW,
+                    Button.LogicState.PRESSED_WHEN_HIGH,
                     KeyEvent.KEYCODE_SPACE);
             btnDriver.register();
 
@@ -37,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_SPACE) {
             Log.v("brad", "KeyDown");
+            try {
+                gpioLed.setValue(true);
+            }catch (Exception e){
+                Log.v("brad", e.toString());
+            }
         }
         return true; //super.onKeyDown(keyCode, event);
     }
@@ -45,6 +54,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_SPACE) {
             Log.v("brad", "KeyUp");
+            try {
+                gpioLed.setValue(false);
+            }catch (Exception e){
+                Log.v("brad", e.toString());
+            }
         }
         return true; //super.onKeyUp(keyCode, event);
     }
