@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         PeripheralManager peripheralManager = PeripheralManager.getInstance();
 
         try{
-            btnDriver = new ButtonInputDriver("BCM4",
+            btnDriver = new ButtonInputDriver("BCM17",
                     Button.LogicState.PRESSED_WHEN_LOW,
                     KeyEvent.KEYCODE_SPACE);
             btnDriver.register();
@@ -35,13 +35,17 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        Log.v("brad", "KeyDown");
-        return super.onKeyDown(keyCode, event);
+        if (keyCode == KeyEvent.KEYCODE_SPACE) {
+            Log.v("brad", "KeyDown");
+        }
+        return true; //super.onKeyDown(keyCode, event);
     }
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        Log.v("brad", "KeyUp");
-        return super.onKeyUp(keyCode, event);
+        if (keyCode == KeyEvent.KEYCODE_SPACE) {
+            Log.v("brad", "KeyUp");
+        }
+        return true; //super.onKeyUp(keyCode, event);
     }
 }
