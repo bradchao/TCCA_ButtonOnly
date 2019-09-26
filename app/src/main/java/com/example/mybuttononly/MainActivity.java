@@ -40,22 +40,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_SPACE) {
-            Log.v("brad", "KeyDown");
-            try {
-                gpioLed.setValue(true);
-            }catch (Exception e){
-                Log.v("brad", e.toString());
-            }
-        }
-        return true; //super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_SPACE) {
             Log.v("brad", "KeyUp");
             try {
-                gpioLed.setValue(false);
+                gpioLed.setValue(!gpioLed.getValue());
             }catch (Exception e){
                 Log.v("brad", e.toString());
             }
