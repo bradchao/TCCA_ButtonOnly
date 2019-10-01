@@ -47,6 +47,16 @@ public class MainActivity extends AppCompatActivity {
 
         sdroot = Environment.getExternalStorageDirectory();
         saveFile();
+
+        readUSB();
+    }
+
+    private void readUSB(){
+        File usb = new File("/mnt/usb");
+        File[] files = usb.listFiles();
+        for (File file : files){
+            Log.v("brad", file.getAbsolutePath());
+        }
     }
 
 
