@@ -3,6 +3,8 @@ package com.example.mybuttononly;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -99,6 +101,12 @@ public class MainActivity extends AppCompatActivity {
         Log.v("brad", "android_id = " +
                 Settings.Secure.getString(
                         getContentResolver(), Settings.Secure.ANDROID_ID));
+
+        WifiManager wifiManager =
+                (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        String mac = wifiInfo.getMacAddress();
+        Log.v("brad", "nac = " + mac);
 
 
     }
