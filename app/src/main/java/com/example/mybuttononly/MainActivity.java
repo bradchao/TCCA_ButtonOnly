@@ -3,6 +3,7 @@ package com.example.mybuttononly;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.KeyEvent;
 
@@ -11,9 +12,14 @@ import com.google.android.things.contrib.driver.button.ButtonInputDriver;
 import com.google.android.things.pio.Gpio;
 import com.google.android.things.pio.PeripheralManager;
 
+import java.io.File;
+import java.io.FileOutputStream;
+
 public class MainActivity extends AppCompatActivity {
     private Gpio gpioLed;
     private ButtonInputDriver btnDriver;
+
+    private File sdroot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +41,24 @@ public class MainActivity extends AppCompatActivity {
         }catch (Exception e){
             Log.v("brad", e.toString());
         }
+
+        sdroot = Environment.getExternalStorageDirectory();
+        saveFile();
+    }
+
+
+    private void saveFile(){
+        File file = new File(sdroot, "mytest.txt");
+        int rand = (int)(Math.random()*49+1);
+        Log.v("brad", "rand = " + rand);
+        try(FileOutputStream fout = new FileOutputStream(file)){
+            fout.write(("Hello:"+rand).getBytes());
+            fout.flush();
+        }catch (Exception e){
+            Log.v("brad", e.toString());
+        }
+
+
     }
 
     @Override
