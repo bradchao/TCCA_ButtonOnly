@@ -12,8 +12,11 @@ import com.google.android.things.contrib.driver.button.ButtonInputDriver;
 import com.google.android.things.pio.Gpio;
 import com.google.android.things.pio.PeripheralManager;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStreamReader;
 
 public class MainActivity extends AppCompatActivity {
     private Gpio gpioLed;
@@ -54,11 +57,10 @@ public class MainActivity extends AppCompatActivity {
         try(FileOutputStream fout = new FileOutputStream(file)){
             fout.write(("Hello:"+rand).getBytes());
             fout.flush();
+            Log.v("brad", "save ok");
         }catch (Exception e){
             Log.v("brad", e.toString());
         }
-
-
     }
 
     @Override
@@ -71,6 +73,26 @@ public class MainActivity extends AppCompatActivity {
                 Log.v("brad", e.toString());
             }
         }
+        readFile();
         return true; //super.onKeyUp(keyCode, event);
     }
+
+    private void readFile(){
+        File file = new File(sdroot, "mytest.txt");
+
+        try (BufferedReader br = new BufferedReader(
+                new InputStreamReader(
+                        new FileInputStream(file)))){
+            String line = br.readLine();
+            Log.v("brad", line);
+        }catch (Exception e){
+            Log.v("brad", e.toString());
+        }
+
+
+
+
+
+    }
+
 }
