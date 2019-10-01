@@ -2,8 +2,12 @@ package com.example.mybuttononly;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
 
@@ -52,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         //readUSB();
         setupTime();
+        getID();
     }
 
     private void readUSB(){
@@ -83,6 +88,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void getID(){
+        TelephonyManager tm =
+                (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        //String mid = tm.getManufacturerCode();
+        String did = tm.getDeviceId();
+        Log.v("brad", "did = " + did);
+        Log.v("brad", "sno = " + Build.SERIAL);
+
+        Log.v("brad", "android_id = " +
+                Settings.Secure.getString(
+                        getContentResolver(), Settings.Secure.ANDROID_ID));
+
+
+    }
 
     private void saveFile(){
         File file = new File(sdroot, "mytest.txt");
