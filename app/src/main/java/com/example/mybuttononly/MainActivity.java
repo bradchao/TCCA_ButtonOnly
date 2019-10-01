@@ -9,6 +9,7 @@ import android.view.KeyEvent;
 
 import com.google.android.things.contrib.driver.button.Button;
 import com.google.android.things.contrib.driver.button.ButtonInputDriver;
+import com.google.android.things.device.TimeManager;
 import com.google.android.things.pio.Gpio;
 import com.google.android.things.pio.PeripheralManager;
 
@@ -17,6 +18,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
     private Gpio gpioLed;
@@ -48,15 +50,37 @@ public class MainActivity extends AppCompatActivity {
         sdroot = Environment.getExternalStorageDirectory();
         saveFile();
 
-        readUSB();
+        //readUSB();
+        setupTime();
     }
 
     private void readUSB(){
         File usb = new File("/mnt/usb");
         File[] files = usb.listFiles();
-        for (File file : files){
-            Log.v("brad", file.getAbsolutePath());
+        if (files != null) {
+            for (File file : files) {
+                Log.v("brad", file.getAbsolutePath());
+            }
+        }else{
+            Log.v("brad", "üsb null");
         }
+    }
+
+    private void setupTime(){
+        TimeManager timeManager = TimeManager.getInstance();
+
+        timeManager.setTimeFormat(TimeManager.FORMAT_24);
+        timeManager.setTimeZone("Asia/Taipei");
+
+        Calendar now = Calendar.getInstance();
+        int yy = now.get(Calendar.YEAR);
+        int mm = now.get(Calendar.MONTH)+1;
+        int dd = now.get(Calendar.DAY_OF_MONTH);
+        int hh = now.get(Calendar.HOUR_OF_DAY);
+        int ii = now.get(Calendar.MINUTE);
+
+        Log.v("brad", yy+"-"+mm+"-"+dd+" " + hh + ":"+ ii);
+
     }
 
 
