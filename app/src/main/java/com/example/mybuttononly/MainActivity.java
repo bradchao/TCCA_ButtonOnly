@@ -18,6 +18,8 @@ import com.google.android.things.contrib.driver.button.ButtonInputDriver;
 import com.google.android.things.device.TimeManager;
 import com.google.android.things.pio.Gpio;
 import com.google.android.things.pio.PeripheralManager;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     private ButtonInputDriver btnDriver;
 
     private File sdroot;
+
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +64,10 @@ public class MainActivity extends AppCompatActivity {
         //readUSB();
         setupTime();
         getID();
+
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("myled");
+
     }
 
     private void readUSB(){
@@ -89,6 +98,12 @@ public class MainActivity extends AppCompatActivity {
         Log.v("brad", yy+"-"+mm+"-"+dd+" " + hh + ":"+ ii);
 
     }
+
+    {
+
+
+    }
+
 
     private void getID(){
         TelephonyManager tm =
@@ -130,6 +145,14 @@ public class MainActivity extends AppCompatActivity {
             Log.v("brad", "KeyUp");
             try {
                 gpioLed.setValue(!gpioLed.getValue());
+
+                if (gpioLed.getValue()){
+                    myRef.setValue("true");
+                }else{
+                    myRef.setValue("false");
+                }
+
+
             }catch (Exception e){
                 Log.v("brad", e.toString());
             }
