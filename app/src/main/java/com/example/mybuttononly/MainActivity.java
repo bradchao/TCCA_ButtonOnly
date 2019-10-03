@@ -276,6 +276,7 @@ public class MainActivity extends AppCompatActivity {
                 .setIncludeTxPowerLevel(false)
                 .addServiceUuid(new ParcelUuid(MyService))
                 .build();
+        bluetoothLeAdvertiser = bluetoothAdapter.getBluetoothLeAdvertiser();
         bluetoothLeAdvertiser.startAdvertising(settings, data,
                 new AdvertiseCallback() {
                     @Override
