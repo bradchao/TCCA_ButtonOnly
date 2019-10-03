@@ -237,6 +237,7 @@ public class MainActivity extends AppCompatActivity {
             if (state == BluetoothAdapter.STATE_ON){
                 Log.v("brad", "ble on");
                 startAdv();
+                startServer();
             }else if (state == BluetoothAdapter.STATE_OFF){
                 Log.v("brad", "ble off");
             }
@@ -255,6 +256,7 @@ public class MainActivity extends AppCompatActivity {
             bluetoothAdapter.enable();
         }else{
             startAdv();
+            startServer();
         }
 
     }
@@ -307,6 +309,17 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private void startServer(){
+        bluetoothGattServer = bluetoothManager.openGattServer(this, null);
+        if (bluetoothGattServer == null){
+            Log.v("brad", "create gatt server xx");
+            return;
+        }
+
+        bluetoothGattServer.addService();
+
     }
 
 
