@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        initBle();
     }
 
     private void readUSB(){
@@ -218,6 +218,16 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothGattServer bluetoothGattServer;
     private Set<BluetoothDevice> devices = new HashSet<>();
+
+    private void initBle(){
+        bluetoothManager  = (BluetoothManager)
+                getSystemService(Context.BLUETOOTH_SERVICE);
+        bluetoothAdapter = bluetoothManager.getAdapter();
+
+        
+
+
+    }
 
 
 
