@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattServer;
+import android.bluetooth.BluetoothGattServerCallback;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.AdvertiseCallback;
@@ -314,7 +316,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startServer(){
-        bluetoothGattServer = bluetoothManager.openGattServer(this, null);
+        bluetoothGattServer = bluetoothManager.openGattServer(this,
+                new BluetoothGattServerCallback() {
+                    @Override
+                    public void onCharacteristicReadRequest(BluetoothDevice device, int requestId, int offset, BluetoothGattCharacteristic characteristic) {
+                        //super.onCharacteristicReadRequest(device, requestId, offset, characteristic);
+                        if (characteristic.getUuid().equals(Now_Led)){
+                            try {
+                                bluetoothGattServer.sendResponse(device,
+                                        requestId,
+                                        BluetoothGatt.GATT_SUCCESS,
+                                        0,
+                                        gpioLed.getValue() ? new byte[]{1} : new byte[]{0});
+                            }catch (Exception e){
+                                Log.v("brad", e.toString());
+                            }
+                        }
+
+
+                    }
+                });
         if (bluetoothGattServer == null){
             Log.v("brad", "create gatt server xx");
             return;
