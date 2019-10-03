@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGattServer;
 import android.bluetooth.BluetoothManager;
+import android.bluetooth.le.AdvertiseSettings;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -229,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
                     BluetoothAdapter.STATE_OFF);
             if (state == BluetoothAdapter.STATE_ON){
                 Log.v("brad", "ble on");
-
+                startAdv();
             }else if (state == BluetoothAdapter.STATE_OFF){
                 Log.v("brad", "ble off");
             }
@@ -247,12 +248,25 @@ public class MainActivity extends AppCompatActivity {
         if (!bluetoothAdapter.isEnabled()){
             bluetoothAdapter.enable();
         }else{
-
+            startAdv();
         }
 
     }
 
-    
+    private void startAdv(){
+        bluetoothAdapter.setName("Brad_r3b");
+
+        AdvertiseSettings settings = new AdvertiseSettings.Builder()
+                .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_BALANCED)
+                .setConnectable(true)
+                .setTimeout(0)
+                .setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM)
+                .build();
+
+        
+    }
+
+
 
 
 }
