@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattServer;
+import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.AdvertiseCallback;
 import android.bluetooth.le.AdvertiseData;
@@ -318,9 +320,20 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        bluetoothGattServer.addService();
+        bluetoothGattServer.addService(createLedService());
 
     }
 
+    private static BluetoothGattService createLedService(){
+        BluetoothGattService service = new BluetoothGattService(MyService,
+                BluetoothGattService.SERVICE_TYPE_PRIMARY);
+        BluetoothGattCharacteristic currentLed =
+                new BluetoothGattCharacteristic(Now_Led,
+                        BluetoothGattCharacteristic.PROPERTY_READ |
+                        BluetoothGattCharacteristic.PROPERTY_NOTIFY,
+                        BluetoothGattCharacteristic.PERMISSION_READ);
+        service.addCharacteristic(currentLed);
+        return  service;
+    }
 
 }
