@@ -6,7 +6,9 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGattServer;
 import android.bluetooth.BluetoothManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
@@ -219,12 +221,25 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothGattServer bluetoothGattServer;
     private Set<BluetoothDevice> devices = new HashSet<>();
 
+    private BroadcastReceiver bluetoothReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE,
+                    BluetoothAdapter.STATE_OFF);
+            if (state == BluetoothAdapter.STATE_ON){
+                Log.v("brad", "ble on");
+            }else if (state == BluetoothAdapter.STATE_OFF){
+                Log.v("brad", "ble off");
+            }
+        }
+    };
+
     private void initBle(){
         bluetoothManager  = (BluetoothManager)
                 getSystemService(Context.BLUETOOTH_SERVICE);
         bluetoothAdapter = bluetoothManager.getAdapter();
 
-        
+
 
 
     }
