@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGattServer;
 import android.bluetooth.BluetoothManager;
+import android.bluetooth.le.AdvertiseCallback;
 import android.bluetooth.le.AdvertiseData;
 import android.bluetooth.le.AdvertiseSettings;
 import android.bluetooth.le.BluetoothLeAdvertiser;
@@ -275,10 +276,37 @@ public class MainActivity extends AppCompatActivity {
                 .setIncludeTxPowerLevel(false)
                 .addServiceUuid(new ParcelUuid(MyService))
                 .build();
-        bluetoothLeAdvertiser.startAdvertising(settings, data, null);
+        bluetoothLeAdvertiser.startAdvertising(settings, data,
+                new AdvertiseCallback() {
+                    @Override
+                    public void onStartSuccess(AdvertiseSettings settingsInEffect) {
+                        super.onStartSuccess(settingsInEffect);
+                        Log.v("brad", "adv start ok");
+                    }
+
+                    @Override
+                    public void onStartFailure(int errorCode) {
+                        super.onStartFailure(errorCode);
+                        Log.v("brad", "adv start xx");
+                    }
+                });
     }
 
+    private void stopAdv(){
+        if (bluetoothLeAdvertiser != null){
+            bluetoothLeAdvertiser.stopAdvertising(new AdvertiseCallback() {
+                @Override
+                public void onStartSuccess(AdvertiseSettings settingsInEffect) {
+                    super.onStartSuccess(settingsInEffect);
+                }
 
+                @Override
+                public void onStartFailure(int errorCode) {
+                    super.onStartFailure(errorCode);
+                }
+            });
+        }
+    }
 
 
 }
