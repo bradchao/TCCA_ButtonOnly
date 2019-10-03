@@ -2,6 +2,10 @@ package com.example.mybuttononly;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGattServer;
+import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -31,6 +35,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
     private Gpio gpioLed;
@@ -206,11 +212,13 @@ public class MainActivity extends AppCompatActivity {
         }catch (Exception e){
             Log.v("brad", e.toString());
         }
-
-
-
-
-
     }
+
+    private BluetoothManager bluetoothManager;
+    private BluetoothAdapter bluetoothAdapter;
+    private BluetoothGattServer bluetoothGattServer;
+    private Set<BluetoothDevice> devices = new HashSet<>();
+
+
 
 }
