@@ -9,6 +9,7 @@ import android.bluetooth.BluetoothManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
@@ -228,6 +229,7 @@ public class MainActivity extends AppCompatActivity {
                     BluetoothAdapter.STATE_OFF);
             if (state == BluetoothAdapter.STATE_ON){
                 Log.v("brad", "ble on");
+
             }else if (state == BluetoothAdapter.STATE_OFF){
                 Log.v("brad", "ble off");
             }
@@ -238,12 +240,19 @@ public class MainActivity extends AppCompatActivity {
         bluetoothManager  = (BluetoothManager)
                 getSystemService(Context.BLUETOOTH_SERVICE);
         bluetoothAdapter = bluetoothManager.getAdapter();
+        IntentFilter filter = new IntentFilter(
+                BluetoothAdapter.ACTION_STATE_CHANGED);
+        registerReceiver(bluetoothReceiver, filter);
 
+        if (!bluetoothAdapter.isEnabled()){
+            bluetoothAdapter.enable();
+        }else{
 
-
+        }
 
     }
 
+    
 
 
 }
