@@ -6,7 +6,9 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGattServer;
 import android.bluetooth.BluetoothManager;
+import android.bluetooth.le.AdvertiseData;
 import android.bluetooth.le.AdvertiseSettings;
+import android.bluetooth.le.BluetoothLeAdvertiser;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +18,7 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.ParcelUuid;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -41,6 +44,7 @@ import java.io.InputStreamReader;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
     private Gpio gpioLed;
@@ -222,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothGattServer bluetoothGattServer;
     private Set<BluetoothDevice> devices = new HashSet<>();
+    private BluetoothLeAdvertiser bluetoothLeAdvertiser;
 
     private BroadcastReceiver bluetoothReceiver = new BroadcastReceiver() {
         @Override
@@ -253,6 +258,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public static UUID MyService = UUID.fromString("00001805-0000-1000-8000-00805f9b34fb");
+    public static UUID Now_Led = UUID.fromString("00002a2b-0000-1000-8000-00805f9b34fb");
+
     private void startAdv(){
         bluetoothAdapter.setName("Brad_r3b");
 
@@ -262,8 +270,12 @@ public class MainActivity extends AppCompatActivity {
                 .setTimeout(0)
                 .setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM)
                 .build();
-
-        
+        AdvertiseData data = new AdvertiseData.Builder()
+                .setIncludeDeviceName(true)
+                .setIncludeTxPowerLevel(false)
+                .addServiceUuid(new ParcelUuid(MyService))
+                .build();
+        bluetoothLeAdvertiser.startAdvertising(settings, data, null);
     }
 
 
